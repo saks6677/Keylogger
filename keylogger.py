@@ -29,7 +29,7 @@ number_of_iterations_end = 2 #number of times
 #the program will run
 
 email_address = "coding.texts123@gmail.com" # Enter disposable email here
-password = "User8681946731243" # Enter email password here
+password = "PASSWORD" # Enter email password here
 
 username = getpass.getuser()
 
